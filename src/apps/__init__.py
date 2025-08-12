@@ -1,0 +1,3 @@
+"""
+MultiMarket Hub - Applications package
+"""
