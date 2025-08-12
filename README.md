@@ -532,10 +532,25 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-- **Documentation**: [Full Documentation](docs/)
-- **Issues**: [GitHub Issues](https://github.com/your-org/multimarket-hub/issues)
-- **Security**: See [SECURITY.md](SECURITY.md) for security policies
-- **Quality**: All quality tools documented in [ARCHITECTURE.md](ARCHITECTURE.md)
+### 📚 Documentation
+- **[Architecture Documentation](ARCHITECTURE.md)**: Detailed system architecture, Strategy Pattern implementation, and development tools
+- **[Security Documentation](SECURITY.md)**: Comprehensive security analysis with 5 specialized tools
+- **[Testing Guide](tests/README.md)**: Testing structure, commands, and best practices
+- **[Git Setup Guide](GIT_SETUP.md)**: Git configuration and development workflow
+
+### 🐛 Issues & Support
+- **Issues**: [Create an Issue](https://github.com/multimarket-hub/multimarket-hub/issues/new) for bugs, feature requests, or questions
+- **Discussions**: [GitHub Discussions](https://github.com/multimarket-hub/multimarket-hub/discussions) for community support
+
+### 🔒 Security
+- **Security Policies**: See [SECURITY.md](SECURITY.md) for vulnerability reporting and security practices
+- **Security Contact**: For sensitive security issues, email security@multimarket-hub.com
+
+### ⚡ Quick Links
+- **Development Setup**: Run `make setup-dev` to get started
+- **Quality Checks**: Run `make quality-check` for code quality analysis
+- **Security Scan**: Run `make security-full` for comprehensive security analysis
+- **Testing**: Run `make test` for the complete test suite
 
 ---
 
