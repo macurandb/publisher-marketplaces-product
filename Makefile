@@ -194,10 +194,15 @@ quality-fix: format
 quality-report:
 	@echo "📊 Generating code quality report..."
 	@mkdir -p reports
-	flake8 src/ tests/ --format=html --htmldir=reports/flake8 --max-line-length=88 --extend-ignore=E203,W503 || true
+	ruff check src/ tests/ --output-format=json > reports/ruff-report.json || true
 	bandit -r src/ -f html -o reports/bandit.html || true
 	radon cc src/ -a -nc --json > reports/complexity.json || true
 	@echo "📊 Quality reports generated in reports/ directory"
+
+# Check documentation links
+check-links:
+	@echo "🔗 Checking documentation links..."
+	./scripts/check-links.sh
 
 # Pre-commit checks (run before committing)
 pre-commit: format-check lint type-check test-fast
@@ -275,6 +280,7 @@ help:
 	@echo "  quality-check    Run all quality checks"
 	@echo "  quality-fix      Auto-fix quality issues"
 	@echo "  quality-report   Generate quality reports"
+	@echo "  check-links      Check documentation links"
 	@echo "  pre-commit       Run pre-commit checks"
 	@echo "  ci-quality       Run CI/CD quality pipeline"
 	@echo ""
