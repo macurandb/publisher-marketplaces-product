@@ -1,0 +1,46 @@
+# pip-audit configuration for MultiMarket Hub
+# https://pypi.org/project/pip-audit/
+
+[tool.pip-audit]
+# Output format (json, cyclonedx-json, cyclonedx-xml, sarif)
+format = "json"
+
+# Vulnerability database to use
+vulnerability-service = "pypi"
+
+# Ignore specific vulnerabilities (use with caution)
+# ignore-vulns = ["GHSA-xxxx-xxxx-xxxx"]
+
+# Require hashes for all dependencies
+require-hashes = false
+
+# Skip editable packages
+skip-editable = true
+
+# Disable pip's version check
+disable-pip = false
+
+# Cache directory for vulnerability database
+cache-dir = ".pip-audit-cache"
+
+# Progress reporting
+progress-spinner = true
+
+# Severity threshold (low, medium, high, critical)
+# Only report vulnerabilities at or above this level
+# severity-threshold = "medium"
+
+# Output file
+output = "reports/pip-audit.json"
+
+# Additional options
+[tool.pip-audit.report]
+# Include additional metadata in reports
+include-summary = true
+include-fix-versions = true
+
+# Exclude certain packages from audit
+# exclude = ["package-name"]
+
+# Only audit specific packages
+# only = ["package-name"]

@@ -1,0 +1,137 @@
+# Semgrep configuration for MultiMarket Hub
+# https://semgrep.dev/docs/writing-rules/rule-syntax/
+
+rules:
+  # Django Security Rules
+  - id: django-debug-true
+    patterns:
+      - pattern: DEBUG = True
+    message: "DEBUG should not be True in production"
+    languages: [python]
+    severity: WARNING
+    paths:
+      include:
+        - "*/settings/production.py"
+        - "*/settings/staging.py"
+
+  - id: django-secret-key-hardcoded
+    patterns:
+      - pattern: SECRET_KEY = "..."
+    message: "SECRET_KEY should not be hardcoded"
+    languages: [python]
+    severity: ERROR
+    paths:
+      exclude:
+        - "*/settings/test.py"
+        - "*/settings/local.py"
+
+  # SQL Injection Prevention
+  - id: django-raw-sql
+    patterns:
+      - pattern: |
+          cursor.execute($QUERY, ...)
+      - pattern: |
+          connection.cursor().execute($QUERY, ...)
+    message: "Use parameterized queries to prevent SQL injection"
+    languages: [python]
+    severity: WARNING
+
+  # XSS Prevention
+  - id: django-mark-safe-user-input
+    patterns:
+      - pattern: |
+          mark_safe($USER_INPUT)
+    message: "Avoid using mark_safe with user input to prevent XSS"
+    languages: [python]
+    severity: ERROR
+
+  # CSRF Protection
+  - id: django-csrf-exempt
+    patterns:
+      - pattern: |
+          @csrf_exempt
+          def $FUNC(...):
+            ...
+    message: "Avoid using @csrf_exempt unless absolutely necessary"
+    languages: [python]
+    severity: WARNING
+
+  # Insecure Random
+  - id: insecure-random
+    patterns:
+      - pattern: random.random()
+      - pattern: random.randint(...)
+      - pattern: random.choice(...)
+    message: "Use secrets module for cryptographically secure random numbers"
+    languages: [python]
+    severity: INFO
+
+  # Hardcoded Credentials
+  - id: hardcoded-api-key
+    patterns:
+      - pattern-regex: '(api_key|apikey|api-key)\s*=\s*["\'][a-zA-Z0-9]{20,}["\']'
+    message: "API keys should not be hardcoded"
+    languages: [python]
+    severity: ERROR
+    paths:
+      exclude:
+        - "tests/**"
+        - "*/test_*.py"
+
+  # Logging Sensitive Data
+  - id: logging-sensitive-data
+    patterns:
+      - pattern-regex: 'log.*\.(info|debug|warning|error|critical)\(.*password.*\)'
+      - pattern-regex: 'log.*\.(info|debug|warning|error|critical)\(.*token.*\)'
+      - pattern-regex: 'log.*\.(info|debug|warning|error|critical)\(.*secret.*\)'
+    message: "Avoid logging sensitive data like passwords, tokens, or secrets"
+    languages: [python]
+    severity: WARNING
+
+  # Unsafe Deserialization
+  - id: unsafe-pickle
+    patterns:
+      - pattern: pickle.loads(...)
+      - pattern: pickle.load(...)
+      - pattern: cPickle.loads(...)
+      - pattern: cPickle.load(...)
+    message: "Avoid using pickle for untrusted data - use JSON instead"
+    languages: [python]
+    severity: ERROR
+
+  # Command Injection
+  - id: command-injection
+    patterns:
+      - pattern: os.system($CMD)
+      - pattern: subprocess.call($CMD, shell=True)
+      - pattern: subprocess.run($CMD, shell=True)
+      - pattern: subprocess.Popen($CMD, shell=True)
+    message: "Avoid shell=True and os.system() to prevent command injection"
+    languages: [python]
+    severity: ERROR
+
+# Rulesets to include
+include:
+  - p/python
+  - p/django
+  - p/security-audit
+  - p/owasp-top-ten
+
+# Paths configuration
+paths:
+  include:
+    - "src/"
+    - "*.py"
+  exclude:
+    - "tests/"
+    - "migrations/"
+    - ".venv/"
+    - "venv/"
+    - "__pycache__/"
+    - "*.pyc"
+    - ".git/"
+
+# Output configuration
+output:
+  format: json
+  destination: reports/semgrep.json

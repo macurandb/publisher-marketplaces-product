@@ -1,0 +1,285 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "multimarket-hub"
+version = "1.0.0"
+description = "A sophisticated product management and marketplace publishing system"
+authors = [{name = "MultiMarket Hub Team"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11"
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | migrations
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_django = "django"
+known_first_party = "src"
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "DJANGO", "FIRSTPARTY", "LOCALFOLDER"]
+
+[tool.ruff]
+# Same as Black.
+line-length = 88
+indent-width = 4
+
+# Assume Python 3.11
+target-version = "py311"
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "migrations",
+]
+
+[tool.ruff.lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+select = [
+    "E4",
+    "E7",
+    "E9",
+    "F",     # Pyflakes
+    "B",     # flake8-bugbear
+    "I",     # isort
+    "N",     # pep8-naming
+    "UP",    # pyupgrade
+    "YTT",   # flake8-2020
+    "S",     # flake8-bandit
+    "BLE",   # flake8-blind-except
+    "FBT",   # flake8-boolean-trap
+    "A",     # flake8-builtins
+    "COM",   # flake8-commas
+    "C4",    # flake8-comprehensions
+    "DTZ",   # flake8-datetimez
+    "T10",   # flake8-debugger
+    "DJ",    # flake8-django
+    "EM",    # flake8-errmsg
+    "EXE",   # flake8-executable
+    "FA",    # flake8-future-annotations
+    "ISC",   # flake8-implicit-str-concat
+    "ICN",   # flake8-import-conventions
+    "G",     # flake8-logging-format
+    "INP",   # flake8-no-pep420
+    "PIE",   # flake8-pie
+    "T20",   # flake8-print
+    "PYI",   # flake8-pyi
+    "PT",    # flake8-pytest-style
+    "Q",     # flake8-quotes
+    "RSE",   # flake8-raise
+    "RET",   # flake8-return
+    "SLF",   # flake8-self
+    "SLOT",  # flake8-slots
+    "SIM",   # flake8-simplify
+    "TID",   # flake8-tidy-imports
+    "TCH",   # flake8-type-checking
+    "INT",   # flake8-gettext
+    "ARG",   # flake8-unused-arguments
+    "PTH",   # flake8-use-pathlib
+    "ERA",   # eradicate
+    "PD",    # pandas-vet
+    "PGH",   # pygrep-hooks
+    "PL",    # Pylint
+    "TRY",   # tryceratops
+    "FLY",   # flynt
+    "NPY",   # NumPy-specific rules
+    "PERF",  # Perflint
+    "RUF",   # Ruff-specific rules
+]
+
+ignore = [
+    # Allow non-abstract empty methods in abstract base classes
+    "B027",
+    # Allow boolean positional values in function calls, like `dict.get(... True)`
+    "FBT003",
+    # Ignore checks for possible passwords
+    "S105", "S106", "S107",
+    # Ignore complexity
+    "C901", "PLR0911", "PLR0912", "PLR0913", "PLR0915",
+    # Allow print statements (useful for debugging)
+    "T201",
+    # Allow assert statements in tests
+    "S101",
+    # Django-specific ignores
+    "DJ001",  # Avoid using `null=True` on string-based fields
+    "DJ008",  # Model's `__str__` method should return a string
+    # Temporarily ignore common issues during migration
+    "COM812", # Trailing comma missing
+    "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
+    "PT009",  # Use a regular `assert` instead of unittest-style
+    "F841",   # Local variable assigned but never used
+    "BLE001", # Do not catch blind exception
+    "G004",   # Logging statement uses f-string
+    "TRY300", # Consider moving this statement to an `else` block
+    "TRY400", # Use `logging.exception` instead of `logging.error`
+    "UP006",  # Use `dict` instead of `Dict` for type annotation
+    "UP035",  # `typing.Dict` is deprecated, use `dict` instead
+    "PIE790", # Unnecessary `pass` statement
+    "RUF010", # Use explicit conversion flag
+    "ARG001", # Unused function argument
+    "ARG002", # Unused method argument
+    "E741",   # Ambiguous variable name
+    "F402",   # Import shadowed by loop variable
+    "F403",   # `from .base import *` used
+    "F405",   # May be undefined, or defined from star imports
+    # Additional ignores for existing code patterns
+    "TRY003", # Avoid specifying long messages outside the exception class
+    "EM102",  # Exception must not use an f-string literal
+    "RET505", # Unnecessary `else` after `return` statement
+    "TRY301", # Abstract `raise` to an inner function
+    "G201",   # Logging `.exception(...)` should be used instead of `.error(..., exc_info=True)`
+    "B904",   # Within an `except` clause, raise exceptions with `raise ... from err`
+    "TRY200", # Use `raise from` to specify exception cause
+    "RET503", # Missing explicit `return` at the end of function
+    "PLR2004", # Magic value used in comparison
+    "SLF001", # Private member accessed
+    "SIM117", # Use a single `with` statement with multiple contexts
+]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.per-file-ignores]
+# Tests can use magic values, assertions, and imports
+"tests/**/*" = ["PLR2004", "S101", "TID252", "F401", "F811"]
+# Settings files can have long lines and imports
+"**/settings/**" = ["E501", "F401"]
+# Migration files can ignore most rules
+"**/migrations/**" = ["E501", "F401", "F811", "F841", "N806", "N999"]
+# __init__.py files can have unused imports
+"__init__.py" = ["F401"]
+# Services and tasks can have unused imports (for future use)
+"**/services.py" = ["F401"]
+"**/tasks.py" = ["F401"]
+"**/views.py" = ["F401"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
+known-third-party = ["django"]
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+[tool.mypy]
+python_version = "3.11"
+check_untyped_defs = true
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+plugins = ["mypy_django_plugin.main"]
+
+[tool.django-stubs]
+django_settings_module = "src.config.settings.local"
+
+[tool.coverage.run]
+source = "src"
+omit = [
+    "*/migrations/*",
+    "*/venv/*",
+    "*/tests/*",
+    "manage.py",
+    "*/settings/*",
+    "*/config/wsgi.py",
+    "*/config/asgi.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests", "migrations", ".venv", "venv"]
+skips = ["B101", "B105", "B106", "B107"]
+
+[tool.bandit.any_other_function_with_shell_equals_true]
+no_shell = [
+    "os.execl", "os.execle", "os.execlp", "os.execlpe",
+    "os.execv", "os.execve", "os.execvp", "os.execvpe",
+    "os.spawnl", "os.spawnle", "os.spawnlp", "os.spawnlpe",
+    "os.spawnv", "os.spawnve", "os.spawnvp", "os.spawnvpe"
+]
+
+[tool.safety]
+# Safety configuration
+ignore = []
+output = "json"
+full-report = true
+
+[tool.semgrep]
+# Semgrep configuration
+config = [".semgrep.yml"]
+exclude = ["tests/", "migrations/", ".venv/", "venv/"]
+json = true
+output = "reports/semgrep.json"
