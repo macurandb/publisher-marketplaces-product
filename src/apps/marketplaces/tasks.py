@@ -185,7 +185,6 @@ def publish_product_to_marketplace(self, listing_id):
 
         return error_msg
 
-
 def _is_retryable_error(result):
     """
     Determine if an error is retryable
