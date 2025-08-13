@@ -178,5 +178,8 @@ os.environ["CELERY_TASK_EAGER_PROPAGATES"] = "True"
 
 # Test configuration
 OPENAI_API_KEY = "test-api-key"
-WEBHOOK_URL = "https://test.example.com/webhook"
+
 WEBHOOK_SECRET = "test-secret"
+
+# Global webhook URL for async publication results
+GLOBAL_WEBHOOK_URL = "https://test.example.com/async-webhook"

@@ -174,3 +174,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
+# Webhook Configuration
+WEBHOOK_URL = config("WEBHOOK_URL", default="")
+WEBHOOK_SECRET = config("WEBHOOK_SECRET", default="")
+
+# Global webhook URL for async publication results
+GLOBAL_WEBHOOK_URL = config("GLOBAL_WEBHOOK_URL", default="")
